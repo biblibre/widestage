@@ -24,6 +24,7 @@ class DatabaseClient {
             break;
 
         case 'POSTGRE':
+            params.search_path = datasource.connection.search_path;
             adapter = new PgAdapter(params);
             break;
 

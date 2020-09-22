@@ -36,27 +36,22 @@ describe('PostgreSQL database adapter', function () {
             const tableData = require('./__data__/table-data.js');
 
             beforeAll(async function () {
-                const client = adapter.getClient();
-                await client.connect();
-
                 // DROP all tables
-                await client.query("DO $$ DECLARE r RECORD; BEGIN FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP EXECUTE 'DROP TABLE ' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END $$;");
+                await adapter.query("DO $$ DECLARE r RECORD; BEGIN FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = current_schema()) LOOP EXECUTE 'DROP TABLE ' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END $$;");
 
-                await client.query('CREATE TABLE artist (artist_id SERIAL, name TEXT)');
-                await client.query('CREATE TABLE album (album_id SERIAL, artist_id INTEGER, title TEXT, release_date DATE, price NUMERIC(10, 2))');
-                await client.query('CREATE TABLE song (song_id SERIAL, album_id INTEGER, title TEXT)');
+                await adapter.query('CREATE TABLE artist (artist_id SERIAL, name TEXT)');
+                await adapter.query('CREATE TABLE album (album_id SERIAL, artist_id INTEGER, title TEXT, release_date DATE, price NUMERIC(10, 2))');
+                await adapter.query('CREATE TABLE song (song_id SERIAL, album_id INTEGER, title TEXT)');
 
                 for (const artist of tableData.artist) {
-                    await client.query('INSERT INTO artist (artist_id, name) VALUES ($1, $2)', artist);
+                    await adapter.query('INSERT INTO artist (artist_id, name) VALUES ($1, $2)', artist);
                 }
                 for (const album of tableData.album) {
-                    await client.query('INSERT INTO album (album_id, artist_id, title, release_date, price) VALUES ($1, $2, $3, $4, $5)', album);
+                    await adapter.query('INSERT INTO album (album_id, artist_id, title, release_date, price) VALUES ($1, $2, $3, $4, $5)', album);
                 }
                 for (const song of tableData.song) {
-                    await client.query('INSERT INTO song (song_id, album_id, title) VALUES ($1, $2, $3)', song);
+                    await adapter.query('INSERT INTO song (song_id, album_id, title) VALUES ($1, $2, $3)', song);
                 }
-
-                await client.end();
             });
 
             describe('testConnection', function () {
