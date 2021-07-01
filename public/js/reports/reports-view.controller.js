@@ -72,7 +72,14 @@
         }
 
         function saveAsXLSX () {
-            api.getReportData(vm.report).then(function (res) {
+            const filterCriteria = {};
+            for (const i in vm.prompts) {
+                const criterion = vm.prompts[i].criterion;
+                if (Object.keys(criterion).length !== 0) {
+                    filterCriteria[i] = criterion;
+                }
+            }
+            api.getReportData(vm.report, { filters: filterCriteria }).then(function (res) {
                 xlsxService.saveReportAsXLSX(vm.report, res.data);
             });
         }
