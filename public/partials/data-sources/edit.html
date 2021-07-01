@@ -51,6 +51,11 @@
                 <input class="form-control" type="password" name="password" id="password" ng-model="vm._dataSource.connection.password" data-validate="required" placeholder="{{ 'Set here the username password to access the database' | translate }}" novalidate="novalidate" aria-required="true" aria-describedby="password-error" aria-invalid="false"><span id="password-error" class="validate-has-error" style="display: none;"></span>
             </div>
 
+            <div class="form-group" ng-if="vm._dataSource.type === 'POSTGRE'">
+                <label class="control-label" for="search_path" translate>Search path</label>
+                <input class="form-control" type="text" name="search_path" id="search_path" ng-model="vm._dataSource.connection.search_path" placeholder="{{ 'PostgreSQL Schema Search Path' | translate }}">
+            </div>
+
             <div ng-if="vm.testConnection.message" class="alert" ng-class="{'alert-success': vm.testConnection.result == 1,'alert-danger': vm.testConnection.result != 1}" >
                 {{vm.testConnection.message}}
             </div>

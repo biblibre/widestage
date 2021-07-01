@@ -8,6 +8,7 @@ var datasourceSchema = new mongoose.Schema({
         password: String,
         port: String,
         userName: String,
+        search_path: String, // Only for PostgreSQL
     },
     createdBy: { type: String },
     createdOn: { type: Date, default: Date.now },
